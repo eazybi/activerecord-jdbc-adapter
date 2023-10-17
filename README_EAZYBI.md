@@ -17,6 +17,7 @@
         cd ~/rubygems/activerecord-jdbc-adapter
 
 4. Run the `bundle` command with the specified ActiveRecord version
+
         AR_VERSION=6-1-stable bundle
 
 

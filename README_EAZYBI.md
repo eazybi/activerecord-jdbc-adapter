@@ -21,7 +21,7 @@ must be the same version.
 | `221a5c43` | `src/java/arjdbc/mysql/MySQLRubyJdbcConnection.java` | Override `timestampToRuby`, copied verbatim from `RubyJdbcConnection` |
 | `5201d005` | same | Catch the `HOUR_OF_DAY` `SQLException` and fall back to `stringToRuby`. Happens when the app/DB time zone is not UTC and the value read (e.g. `updated_at_utc`) does not exist in the server time zone (DST gap) |
 | `7a7f8ba3` | `src/java/arjdbc/postgresql/PostgreSQLRubyJdbcConnection.java` | Read `TimeZone.getDefault()` on every `setDate` instead of caching it in the `TZ_DEFAULT` constant, because eazyBI changes the default time zone at runtime |
-| `TODO` | same | Remove the `setStringParameter` override that guessed a UUID type for untyped string binds. Rails 7.2 binds a multi value IN and a where with placeholders without the column type, so a string that only looks like a UUID was sent as `uuid` and failed with `character varying = uuid` (EAZYBI-7339). Drop this patch if upstream merges [#1087](https://github.com/jruby/activerecord-jdbc-adapter/pull/1087) or [#1206](https://github.com/jruby/activerecord-jdbc-adapter/pull/1206) |
+| `2a6d2fae` | same | Remove the `setStringParameter` override that guessed a UUID type for untyped string binds. Rails 7.2 binds a multi value IN and a where with placeholders without the column type, so a string that only looks like a UUID was sent as `uuid` and failed with `character varying = uuid` (EAZYBI-7339). Drop this patch if upstream merges [#1087](https://github.com/jruby/activerecord-jdbc-adapter/pull/1087) or [#1206](https://github.com/jruby/activerecord-jdbc-adapter/pull/1206) |
 
 The first three are authored by Jānis Justaments and were originally made against 61.3 in
 https://github.com/eazybi/activerecord-jdbc-adapter/pull/1. All patches are marked in the
@@ -35,7 +35,7 @@ commits above — do not merge this branch:
 
     git fetch upstream --tags
     git checkout -b eazybi-73.0 v73.0
-    git cherry-pick 221a5c43 5201d005 7a7f8ba3 TODO   # order matters, 2 builds on 1
+    git cherry-pick 221a5c43 5201d005 7a7f8ba3 2a6d2fae   # order matters, 2 builds on 1
 
 Then check that `RubyJdbcConnection#timestampToRuby` upstream has not changed, since the
 MySQL override is a copy of it:
